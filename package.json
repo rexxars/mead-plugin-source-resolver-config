@@ -1,6 +1,6 @@
 {
   "name": "mead-plugin-source-resolver-config",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Super-simple source resolver, that simply uses the configuration file",
   "main": "src/sourceResolver.js",
   "scripts": {
