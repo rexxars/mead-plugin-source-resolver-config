@@ -39,7 +39,7 @@ test('throws on missing adapter prop', t => {
 })
 
 test('throws on missing name prop', t => {
-  const app = {locals: {config: {sources: [{adapter: 'fs'}]}}}
+  const app = {locals: {config: {sources: [{adapter: {type: 'fs'}}]}}}
   plugin.register({app}, err => {
     t.ok(err instanceof Error, 'should error')
     t.ok(err.message.includes('name\'-property'), 'has meaningful error')
@@ -48,7 +48,7 @@ test('throws on missing name prop', t => {
 })
 
 test('throws on invalid name prop', t => {
-  const app = {locals: {config: {sources: [{adapter: 'fs', name: '1337-ghosts!'}]}}}
+  const app = {locals: {config: {sources: [{adapter: {type: 'fs'}, name: '1337-ghosts!'}]}}}
   plugin.register({app}, err => {
     t.ok(err instanceof Error, 'should error')
     t.ok(err.message.includes('letters, numbers and dashes'), 'has meaningful error')
@@ -56,8 +56,17 @@ test('throws on invalid name prop', t => {
   })
 })
 
+test('throws on missing adapter type prop', t => {
+  const app = {locals: {config: {sources: [{adapter: {name: 'fs'}, name: 'cool'}]}}}
+  plugin.register({app}, err => {
+    t.ok(err instanceof Error, 'should error')
+    t.ok(err.message.includes('type'), 'has meaningful error')
+    t.end()
+  })
+})
+
 test('throws on duplicate source names', t => {
-  const sources = [{adapter: 'fs', name: 'fs'}, {adapter: 'fs', name: 'fs'}]
+  const sources = [{adapter: {type: 'fs'}, name: 'fs'}, {adapter: {type: 'fs'}, name: 'fs'}]
   const app = {locals: {config: {sources}}}
   plugin.register({app}, err => {
     t.ok(err instanceof Error, 'should error')
@@ -67,7 +76,7 @@ test('throws on duplicate source names', t => {
 })
 
 test('throws if source name cannot be resolved', t => {
-  const app = {locals: {config: {sources: [{adapter: 'fs', name: 'fs'}]}}}
+  const app = {locals: {config: {sources: [{adapter: {type: 'fs'}, name: 'fs'}]}}}
   const res = {locals: {}}
 
   plugin.register({app}, err => {
@@ -84,8 +93,8 @@ test('throws if source name cannot be resolved', t => {
 
 test('registered sources can be resolved', t => {
   const sources = [
-    {adapter: 'fs', name: 'fs'},
-    {adapter: 'gcs', name: 'gcs', config: {foo: 'bar'}}
+    {adapter: {type: 'fs'}, name: 'fs'},
+    {adapter: {type: 'gcs'}, name: 'gcs', config: {foo: 'bar'}}
   ]
   const app = {locals: {config: {sources}}}
   const res = {locals: {}}

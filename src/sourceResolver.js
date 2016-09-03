@@ -61,4 +61,8 @@ function validateSource(src, index) {
   if (!src.adapter) {
     throw new Error(`Source with name "${src.name}" did not contain required 'adapter'-property`)
   }
+
+  if (!src.adapter.type) {
+    throw new Error(`Source with name "${src.name}" did not have a valid "adapter.type" property`)
+  }
 }
